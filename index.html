@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grammar Gym - Викторина по английской грамматике</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>The Grammar Gym</h1>
+                <p>Проверь свои знания английской грамматики!</p>
+            </div>
+        </header>
+
+        <!-- Экран приветствия -->
+        <div id="welcome-screen" class="screen active">
+            <div class="welcome-content">
+                <div class="logo">
+                    <div class="logo-icon">📚</div>
+                    <h2>The Grammar Gym</h2>
+                </div>
+                
+                <p class="welcome-text">Улучши свои навыки английской грамматики с помощью адаптивной викторины!</p>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-number">1000+</span>
+                        <span class="stat-label">вопросов</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">уровня</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">форматов</span>
+                    </div>
+                </div>
+
+                <div class="quiz-settings">
+                    <div class="setting-group">
+                        <label for="level-select">Уровень английского:</label>
+                        <select id="level-select" class="setting-select">
+                            <option value="beginner">🎯 Начинающий (A1-A2)</option>
+                            <option value="intermediate">⚡ Средний (B1-B2)</option>
+                            <option value="advanced">🚀 Продвинутый (C1-C2)</option>
+                            <option value="mixed">🎲 Смешанный (все уровни)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label for="question-count">Количество вопросов:</label>
+                        <select id="question-count" class="setting-select">
+                            <option value="10">10 вопросов (быстрая)</option>
+                            <option value="20" selected>20 вопросов (стандартная)</option>
+                            <option value="30">30 вопросов (расширенная)</option>
+                            <option value="40">40 вопросов (интенсивная)</option>
+                            <option value="50">50 вопросов (полная)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label for="question-type">Тип вопросов:</label>
+                        <select id="question-type" class="setting-select">
+                            <option value="all">Все типы</option>
+                            <option value="multiple">Множественный выбор</option>
+                            <option value="fill-blank">Заполнить пропуск</option>
+                            <option value="true-false">Верно/Неверно</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="start-btn" class="btn-primary">
+                    <span>Начать викторину</span>
+                    <span class="btn-icon">🎯</span>
+                </button>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Адаптивное тестирование</h3>
+                        <p>Вопросы подбираются под ваш уровень</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h3>Случайный подбор</h3>
+                        <p>Каждая викторина уникальна</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h3>Детальная статистика</h3>
+                        <p>Отслеживайте свой прогресс</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран загрузки -->
+        <div id="loading-screen" class="screen">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <h2>Подготовка вопросов</h2>
+                <p id="loading-text">Загружаем вопросы для вашего уровня...</p>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="loading-progress"></div>
+                    </div>
+                    <span id="loading-percentage">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран викторины -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <div class="quiz-info">
+                    <div class="level-indicator" id="level-indicator">
+                        <span id="current-level">A1-A2</span>
+                    </div>
+                    <div class="timer" id="timer">00:00</div>
+                </div>
+                
+                <div class="progress-section">
+                    <div class="progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <span id="progress-text">Вопрос 1/20</span>
+                    </div>
+                    <div class="score">Счет: <span id="current-score">0</span></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-meta">
+                    <span class="difficulty-badge" id="difficulty-badge">A1</span>
+                    <span class="topic-badge" id="topic-badge">Present Simple</span>
+                    <span class="type-badge" id="type-badge">Выбор</span>
+                </div>
+                
+                <div class="question-content">
+                    <h2 id="question-text"></h2>
+                    <div id="question-hint" class="question-hint"></div>
+                    
+                    <div id="options-container" class="options-container"></div>
+                    <div id="fill-blank-container" class="fill-blank-container" style="display: none;">
+                        <input type="text" id="fill-blank-input" placeholder="Введите ваш ответ...">
+                        <button id="submit-answer" class="btn-secondary">Подтвердить</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-footer">
+                <button id="hint-btn" class="btn-hint">💡 Подсказка</button>
+                <button id="next-btn" class="btn-primary" disabled>Следующий вопрос</button>
+            </div>
+        </div>
+
+        <!-- Экран результатов -->
+        <div id="results-screen" class="screen">
+            <div class="results-content">
+                <div class="results-header">
+                    <h2>Результаты викторины!</h2>
+                    <div class="level-badge" id="result-level">A1-A2</div>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-circle">
+                        <span id="final-score">0</span>
+                        <small>/<span id="total-questions">20</span></small>
+                    </div>
+                    <div class="score-percentage" id="score-percentage">0%</div>
+                </div>
+                
+                <p id="result-message" class="result-message"></p>
+                
+                <div class="results-stats">
+                    <div class="stat-card correct">
+                        <span class="stat-value" id="correct-answers">0</span>
+                        <span class="stat-label">Правильно</span>
+                    </div>
+                    <div class="stat-card incorrect">
+                        <span class="stat-value" id="wrong-answers">0</span>
+                        <span class="stat-label">Неправильно</span>
+                    </div>
+                    <div class="stat-card time">
+                        <span class="stat-value" id="time-taken">00:00</span>
+                        <span class="stat-label">Время</span>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button id="restart-btn" class="btn-primary">🔄 Пройти еще раз</button>
+                    <button id="review-btn" class="btn-secondary">📊 Посмотреть ошибки</button>
+                    <button id="new-quiz-btn" class="btn-outline">🎯 Новая викторина</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран просмотра ошибок -->
+        <div id="review-screen" class="screen">
+            <div class="review-content">
+                <div class="review-header">
+                    <h2>Обзор ошибок</h2>
+                    <div class="review-stats">
+                        <span>Ошибок: <strong id="mistakes-count">0</strong></span>
+                    </div>
+                </div>
+                
+                <div id="review-questions" class="review-questions"></div>
+                
+                <div class="review-actions">
+                    <button id="back-to-results" class="btn-secondary">← Назад к результатам</button>
+                    <button id="practice-mistakes" class="btn-primary">💪 Тренировать ошибки</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
